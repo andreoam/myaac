@@ -156,7 +156,7 @@ return [
 		'footer' => [
 			'name' => 'Custom Text',
 			'type' => 'textarea',
-			'desc' => 'Text displayed in the footer.<br/>For example: <i>' . escapeHtml('<br/>') . 'Your Server &copy; 2023. All rights reserved.</i>',
+			'desc' => 'Text displayed in the footer.<br/>For example: <i>' . escapeHtml('<br/>') . 'Your Server &copy; ' . date("Y") . '. All rights reserved.</i>',
 			'default' => '',
 		],
 		'footer_load_time' => [
@@ -250,6 +250,28 @@ return [
 			'type' => 'boolean',
 			'desc' => 'Allow MyAAC to report anonymous usage statistics to developers? The data is sent only once per 30 days and is fully confidential. It won\'t affect the performance of your website',
 			'default' => true,
+		],
+		[
+			'type' => 'section',
+			'title' => 'Custom HTML',
+		],
+		'html_head' => [
+			'name' => 'HTML Head',
+			'type' => 'textarea',
+			'desc' => escapeHtml('These scripts will be printed in the <head> section. Can be, for example, Google Analytics code.'),
+			'default' => '',
+		],
+		'html_body' => [
+			'name' => 'HTML Body',
+			'type' => 'textarea',
+			'desc' => escapeHtml('These scripts will be printed just below the opening <body> tag.'),
+			'default' => '',
+		],
+		'html_footer' => [
+			'name' => 'HTML Footer',
+			'type' => 'textarea',
+			'desc' => escapeHtml('These scripts will be printed above the closing </body> tag.'),
+			'default' => '',
 		],
 		[
 			'type' => 'category',
@@ -736,6 +758,18 @@ Sent by MyAAC,<br/>
 			'type' => 'boolean',
 			'desc' => 'should country of user be automatically recognized by his IP? This makes an external API call to http://ipinfo.io',
 			'default' => true,
+		],
+		'account_countries_most_popular' => [
+			'name' => 'Account Countries Most Popular',
+			'type' => 'text',
+			'desc' => 'Those countries will be display at the top of the list on the create account page. The short codes of countries can be found in file <i>system/countries.conf.php</i>',
+			'default' => 'pl,se,br,us,gb',
+			'callbacks' => [
+				'get' => function ($value) {
+					$tmp = array_map('trim', explode(',', $value));
+					return array_filter($tmp, function ($v) {return !empty($v); });
+				},
+			],
 		],
 		'characters_per_account' => [
 			'name' => 'Characters per Account',
@@ -1469,17 +1503,6 @@ Sent by MyAAC,<br/>
 			'type' => 'text',
 			'desc' => 'Set to animoutfit.php for animated outfit',
 			'default' => 'https://outfit-images.ots.me/latest/outfit.php',
-		],
-		'outfit_images_wrong_looktypes' => [
-			'name' => 'Outfit Images Wrong Looktypes',
-			'type' => 'text',
-			'desc' => 'This looktypes needs to have different margin-top and margin-left because they are wrong positioned',
-			'default' => '75, 126, 127, 266, 302',
-			'callbacks' => [
-				'get' => function ($value) {
-					return array_map('trim', explode(',', $value));
-				},
-			],
 		],
 		[
 			'type' => 'section',
